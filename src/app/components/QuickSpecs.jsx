@@ -48,7 +48,7 @@ const QuickSpecs = () => {
           </div>
           <div className="text-sm md:text-base text-[#112F4E] leading-relaxed font-light">
             <p>
-              Tender + Toys 14' Williams tender 2 <br />
+              Tender + Toys 14&apos; Williams tender 2 <br />
               Seabobs upgraded with quick <br />
               chargers and fixed selfie camera <br /> Wakeboard Fishing Rods 2 x
               SUPs <br />

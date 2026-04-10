@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 
@@ -30,15 +30,21 @@ const GalleryCarousel = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   // 2. Navigation Logic
-  const nextSlide = (e) => {
-    e?.stopPropagation();
-    setActiveIndex((prev) => (prev + 1) % slides.length);
-  };
+  const nextSlide = useCallback(
+    (e) => {
+      e?.stopPropagation();
+      setActiveIndex((prev) => (prev + 1) % slides.length);
+    },
+    [slides.length]
+  );
 
-  const prevSlide = (e) => {
-    e?.stopPropagation();
-    setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  const prevSlide = useCallback(
+    (e) => {
+      e?.stopPropagation();
+      setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    },
+    [slides.length]
+  );
 
   const getLeftIndex = (i) => (i - 1 + slides.length) % slides.length;
   const getRightIndex = (i) => (i + 1) % slides.length;
@@ -53,7 +59,7 @@ const GalleryCarousel = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isFullScreen]);
+  }, [isFullScreen, nextSlide, prevSlide]);
 
   return (
     <section className="w-full bg-white py-16 px-6 lg:px-12 overflow-hidden">
@@ -110,7 +116,13 @@ const GalleryCarousel = () => {
             />
           </div>
           <div className="mt-4 flex items-center gap-2 text-[#002b45] font-medium text-sm group-hover:opacity-80 transition-opacity">
-            <img src="/arrow22.svg" alt="arrow" className="rotate-180" />
+            <Image
+              src="/arrow22.svg"
+              alt="arrow"
+              width={18}
+              height={18}
+              className="rotate-180"
+            />
             <span>Preview</span>
           </div>
         </div>
@@ -137,9 +149,7 @@ const GalleryCarousel = () => {
 
           {/* HINT OVERLAY */}
           <div
-            className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-full 
-             opacity-100 md:opacity-0 md:group-hover:opacity-100 
-             transition-opacity pointer-events-none flex items-center gap-2 z-30"
+            className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none flex items-center gap-2 z-30"
           >
             <Maximize2 size={12} />
             <span className="md:hidden">Double tap to expand</span>
@@ -166,7 +176,7 @@ const GalleryCarousel = () => {
           </div>
           <div className="mt-4 flex items-center justify-start gap-2 text-[#002b45] font-medium text-sm group-hover:opacity-80 transition-opacity">
             <span>Next</span>
-            <img src="/arrow22.svg" alt="arrow" />
+            <Image src="/arrow22.svg" alt="arrow" width={18} height={18} />
           </div>
         </div>
 
